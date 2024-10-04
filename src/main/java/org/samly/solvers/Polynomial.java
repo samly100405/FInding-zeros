@@ -20,4 +20,15 @@ public final class Polynomial {
         }
         return out;
     }
+
+    public Polynomial derivative() {
+        int newDegree = degree - 1;
+        float[] newCoefficients = new float[newDegree + 1];
+
+        for (int i = 0; i < newCoefficients.length; i++) {
+            newCoefficients[i] = (degree - i) * coefficients[i];
+        }
+
+        return new Polynomial(newDegree, newCoefficients);
+    }
 }
