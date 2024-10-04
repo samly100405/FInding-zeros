@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Solver {
     private static final float EPSILON = 0.000001F;
+
     public static Result BisectionMethod(Polynomial f, List<Float> range, int maxIter) {
         if (range.size() != 2)
             throw new IllegalArgumentException("2 starting values for range");
@@ -20,20 +21,16 @@ public class Solver {
 
         while (iterations < maxIter) {
             float fa = f.evaluate(a);
-            float fb = f.evaluate(b);
             float fc = f.evaluate(c);
 
-            if (b-a < EPSILON || fc == 0) {
+            if (b - a < EPSILON || fc == 0) {
                 converged = true;
                 break;
             }
 
-            if (fa * fc < 0) {
-                b = c;
-            }
-            else {
-                a = c;
-            }
+            if (fa * fc < 0) b = c;
+            else             a = c;
+
             c = (a + b) / 2;
             iterations++;
         }
