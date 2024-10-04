@@ -23,11 +23,15 @@ public class Args {
     private Boolean isHybrid = false;
 
     @Parameter(names = {"--range", "-r"}, description = "Define the starting range.", variableArity = true,
-            listConverter = IntegerConverter.class)
-    List<Integer> range;
+            listConverter = FloatConverter.class)
+    List<Float> range;
 
     @Parameter(names = {"--maxIter"}, description = "Maximum iterations")
     private Integer maxIter = 10000;
+
+    public void setNewton(Boolean newton) {
+        isNewton = newton;
+    }
 
     private static class FileConverter implements IStringConverter<File> {
         @Override
@@ -36,10 +40,10 @@ public class Args {
         }
     }
 
-    private static class IntegerConverter implements IStringConverter<Integer> {
+    private static class FloatConverter implements IStringConverter<Float> {
         @Override
-        public Integer convert(String value){
-            return Integer.parseInt(value);
+        public Float convert(String value){
+            return Float.parseFloat(value);
         }
     }
 
@@ -67,8 +71,12 @@ public class Args {
         return isHybrid;
     }
 
-    public List<Integer> getRange() {
+    public List<Float> getRange() {
         return range;
+    }
+
+    public Integer getMaxIter() {
+        return maxIter;
     }
 
     public String getDescription() {
