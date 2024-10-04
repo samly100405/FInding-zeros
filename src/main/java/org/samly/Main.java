@@ -2,6 +2,9 @@ package org.samly;
 
 import com.beust.jcommander.JCommander;
 import org.samly.cli.Args;
+import org.samly.solvers.Polynomial;
+import org.samly.solvers.Result;
+import org.samly.solvers.Solver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +23,15 @@ public class Main {
 
         return new Polynomial(degree, coefficients);
     }
+
+    private static Result solveWithArgs(Args args) throws FileNotFoundException {
+        Polynomial f = generatePolynomial(args.getFile());
+        if (args.getBisection()) {
+            return Solver.BisectionMethod(f, args.getRange(), args.getMaxIter());
+        }
+
+        return null;
+    }
     public static void main(String[] args) throws FileNotFoundException {
         // generate polynomial from file
 
@@ -31,10 +43,6 @@ public class Main {
 
         System.out.println(a.getDescription());
 
-        Polynomial f = generatePolynomial(a.getFile());
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println("f(" + i + ") = " + f.evaluate(i));
-        }
+        System.out.println(solveWithArgs(a));
     }
 }
