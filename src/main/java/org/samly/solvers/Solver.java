@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Solver {
     private static final float EPSILON = 0.000001F;
+    private static final float DELTA = 0.000001F;
 
     public static Result BisectionMethod(Polynomial f, List<Float> range, int maxIter) {
         if (range.size() != 2)
@@ -36,5 +37,42 @@ public class Solver {
         }
 
         return new Result(c, iterations, converged);
+    }
+
+    public static Result NewtonsMethod(Polynomial f, List<Float> range, int maxIter) {
+        if (range.size() != 1)
+            throw new IllegalArgumentException("1 starting value");
+
+        float a = range.get(0);
+        Polynomial df = f.derivative();
+
+        boolean converged = false;
+        int iterations = 0;
+
+        while (iterations < maxIter) {
+            float vdf = df.evaluate(a);
+            float vf = f.evaluate(a);
+
+//            System.out.println("f(" + a + ") = " + vf);
+//            System.out.println("df(" + a + ")= " + vdf);
+            float d = vf / vdf;
+
+            if ((d < 0 ? -d : d) < EPSILON) {
+                converged  = true;
+                break;
+            }
+
+            a -= d;
+
+            if ((vdf < 0 ? -vdf : vdf) < DELTA) {
+                break;
+            }
+
+
+
+            iterations++;
+        }
+
+        return new Result(a, iterations, converged);
     }
 }

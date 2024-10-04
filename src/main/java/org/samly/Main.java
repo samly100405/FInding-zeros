@@ -30,6 +30,9 @@ public class Main {
             return Solver.BisectionMethod(f, args.getRange(), args.getMaxIter());
         }
 
+        if (args.getNewton()) {
+            return Solver.NewtonsMethod(f, args.getRange(), args.getMaxIter());
+        }
         return null;
     }
     public static void main(String[] args) throws FileNotFoundException {
