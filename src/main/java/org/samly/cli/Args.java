@@ -26,6 +26,9 @@ public class Args {
             listConverter = IntegerConverter.class)
     List<Integer> range;
 
+    @Parameter(names = {"--maxIter"}, description = "Maximum iterations")
+    private Integer maxIter = 10000;
+
     private static class FileConverter implements IStringConverter<File> {
         @Override
         public File convert(String value) {
