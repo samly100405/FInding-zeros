@@ -1,4 +1,4 @@
-package org.samly;
+package org.samly.solvers;
 
 public final class Polynomial {
     private final int degree;
@@ -13,10 +13,10 @@ public final class Polynomial {
         return degree;
     }
 
-    public double evaluate(float x) {
-        double out = 0.0;
+    public float evaluate(float x) {
+        float out = 0.0F;
         for (int i = 0; i < coefficients.length; i++) {
-            out += coefficients[i] * Math.pow(x, degree-i);
+            out += (float) (coefficients[i] * Math.pow(x, degree-i));
         }
         return out;
     }
