@@ -22,13 +22,21 @@ public class Args {
     @Parameter(names = {"--hybrid"}, description = "Use use hybrid method. Requires 2 range.")
     private Boolean isHybrid = false;
 
-    @Parameter(names = {"--range", "-r"}, description = "Define the starting range.", variableArity = true)
-    List<String> range;
+    @Parameter(names = {"--range", "-r"}, description = "Define the starting range.", variableArity = true,
+            listConverter = IntegerConverter.class)
+    List<Integer> range;
 
     private static class FileConverter implements IStringConverter<File> {
         @Override
         public File convert(String value) {
             return new File(value);
+        }
+    }
+
+    private static class IntegerConverter implements IStringConverter<Integer> {
+        @Override
+        public Integer convert(String value){
+            return Integer.parseInt(value);
         }
     }
 
@@ -56,7 +64,7 @@ public class Args {
         return isHybrid;
     }
 
-    public List<String> getRange() {
+    public List<Integer> getRange() {
         return range;
     }
 
