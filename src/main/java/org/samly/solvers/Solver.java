@@ -3,7 +3,7 @@ package org.samly.solvers;
 import java.util.List;
 
 public class Solver {
-    private static final float EPSILON = 0.000001F;
+    private static final float EPSILON = 0.0000001F;
     private static final float DELTA = 0.000001F;
     private static final int HYBRID_BISECTION_COUNT = 5;
 
@@ -76,8 +76,8 @@ public class Solver {
         if (range.size() != 2)
             throw new IllegalArgumentException("2 starting values for range");
 
-        float a = range.get(0);
-        float b = range.get(1);
+        float a = Math.min(range.get(0), range.get(1));
+        float b = Math.max(range.get(0), range.get(1));
 
         boolean converged = false;
         int iterations = 0;
@@ -89,7 +89,7 @@ public class Solver {
             float m = (fb - fa) / (b - a);
             float c = a - fa / m;
 
-            if (b - a < EPSILON) {
+            if ((fa/m < 0 ? -fa/m : fa/m) < EPSILON) {
                 converged  = true;
                 break;
             }
@@ -123,11 +123,6 @@ public class Solver {
             float fa = f.evaluate(a);
             float fc = f.evaluate(c);
 
-            if (b - a < EPSILON || fc == 0) {
-                converged = true;
-                break;
-            }
-
             if (fa * fc < 0) b = c;
             else             a = c;
 
@@ -141,7 +136,7 @@ public class Solver {
             float m = (fb - fa) / (b - a);
             float c = a - fa / m;
 
-            if (b - a < EPSILON) {
+            if ((fa/m < 0 ? -fa/m : fa/m) < EPSILON) {
                 converged  = true;
                 break;
             }
