@@ -10,9 +10,6 @@ public class Args {
     @Parameter(description = "Input File", converter = FileConverter.class)
     private File file;
 
-    @Parameter(names = {"--bis"}, description = "Use Bisection Method. Requires 2 range.")
-    private Boolean isBisection = true;
-
     @Parameter(names = {"--newt"}, description = "Use Newton's Method. Requires only 1 start.")
     private Boolean isNewton = false;
 
@@ -28,10 +25,6 @@ public class Args {
 
     @Parameter(names = {"--maxIter"}, description = "Maximum iterations")
     private Integer maxIter = 10000;
-
-    public void setNewton(Boolean newton) {
-        isNewton = newton;
-    }
 
     private static class FileConverter implements IStringConverter<File> {
         @Override
@@ -52,11 +45,7 @@ public class Args {
     }
 
     public Boolean getBisection() {
-        return isBisection;
-    }
-
-    public void setIsBisection(boolean b) {
-        isBisection = b;
+        return true;
     }
 
     public Boolean getNewton() {
@@ -82,10 +71,10 @@ public class Args {
     public String getDescription() {
         String out = "";
 
-        if (isBisection) out += "Bisection method";
-        else if (isNewton) out += "Newtons method";
+        if (isNewton) out += "Newtons method";
         else if (isSecant) out += "Secant method";
         else if (isHybrid) out += "Hybrid method";
+        else               out += "Bisection Method";
 
         out += "\nRange: " + range.toString();
 
