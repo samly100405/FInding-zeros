@@ -33,6 +33,15 @@ public class Main {
         if (args.getNewton()) {
             return Solver.NewtonsMethod(f, args.getRange(), args.getMaxIter());
         }
+
+        if (args.getSecant()) {
+            return Solver.SecantMethod(f, args.getRange(), args.getMaxIter());
+        }
+
+        if (args.getHybrid()) {
+            return Solver.HybridMethod(f, args.getRange(), args.getMaxIter());
+        }
+
         return null;
     }
     public static void main(String[] args) throws FileNotFoundException {

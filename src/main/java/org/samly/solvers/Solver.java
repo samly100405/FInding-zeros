@@ -5,6 +5,7 @@ import java.util.List;
 public class Solver {
     private static final float EPSILON = 0.000001F;
     private static final float DELTA = 0.000001F;
+    private static final int HYBRID_BISECTION_COUNT = 5;
 
     public static Result BisectionMethod(Polynomial f, List<Float> range, int maxIter) {
         if (range.size() != 2)
@@ -53,8 +54,6 @@ public class Solver {
             float vdf = df.evaluate(a);
             float vf = f.evaluate(a);
 
-//            System.out.println("f(" + a + ") = " + vf);
-//            System.out.println("df(" + a + ")= " + vdf);
             float d = vf / vdf;
 
             if ((d < 0 ? -d : d) < EPSILON) {
@@ -68,9 +67,94 @@ public class Solver {
                 break;
             }
 
+            iterations++;
+        }
 
+        return new Result(a, iterations, converged);
+    }
+    public static Result SecantMethod(Polynomial f, List<Float> range, int maxIter) {
+        if (range.size() != 2)
+            throw new IllegalArgumentException("2 starting values for range");
+
+        float a = range.get(0);
+        float b = range.get(1);
+
+        boolean converged = false;
+        int iterations = 0;
+
+        while (iterations < maxIter) {
+            float fa = f.evaluate(a);
+            float fb = f.evaluate(b);
+
+            float m = (fb - fa) / (b - a);
+            float c = a - fa / m;
+
+            if (b - a < EPSILON) {
+                converged  = true;
+                break;
+            }
 
             iterations++;
+            if (c < a) {
+                b = a;
+                a = c;
+            }
+            else {
+                a = b;
+                b = c;
+            }
+        }
+
+        return new Result(a, iterations, converged);
+    }
+    public static Result HybridMethod(Polynomial f, List<Float> range, int maxIter) {
+        if (range.size() != 2)
+            throw new IllegalArgumentException("2 starting values for range");
+
+        float a = range.get(0);
+        float b = range.get(1);
+
+        boolean converged = false;
+        int iterations = 0;
+
+        // Bisection first
+        for (int i = 0; i < HYBRID_BISECTION_COUNT; i++) {
+            float c = (a + b) / 2;
+            float fa = f.evaluate(a);
+            float fc = f.evaluate(c);
+
+            if (b - a < EPSILON || fc == 0) {
+                converged = true;
+                break;
+            }
+
+            if (fa * fc < 0) b = c;
+            else             a = c;
+
+            iterations++;
+        }
+
+        while (iterations < maxIter) {
+            float fa = f.evaluate(a);
+            float fb = f.evaluate(b);
+
+            float m = (fb - fa) / (b - a);
+            float c = a - fa / m;
+
+            if (b - a < EPSILON) {
+                converged  = true;
+                break;
+            }
+
+            iterations++;
+            if (c < a) {
+                b = a;
+                a = c;
+            }
+            else {
+                a = b;
+                b = c;
+            }
         }
 
         return new Result(a, iterations, converged);
