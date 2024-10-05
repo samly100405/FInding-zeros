@@ -11,7 +11,7 @@ public class Args {
     private File file;
 
     @Parameter(names = {"--bis"}, description = "Use Bisection Method. Requires 2 range.")
-    private Boolean isBisection = false;
+    private Boolean isBisection = true;
 
     @Parameter(names = {"--newt"}, description = "Use Newton's Method. Requires only 1 start.")
     private Boolean isNewton = false;

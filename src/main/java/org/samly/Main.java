@@ -26,9 +26,6 @@ public class Main {
 
     private static Result solveWithArgs(Args args) throws FileNotFoundException {
         Polynomial f = generatePolynomial(args.getFile());
-        if (args.getBisection()) {
-            return Solver.BisectionMethod(f, args.getRange(), args.getMaxIter());
-        }
 
         if (args.getNewton()) {
             return Solver.NewtonsMethod(f, args.getRange(), args.getMaxIter());
@@ -42,6 +39,10 @@ public class Main {
             return Solver.HybridMethod(f, args.getRange(), args.getMaxIter());
         }
 
+        if (args.getBisection()) {
+            return Solver.BisectionMethod(f, args.getRange(), args.getMaxIter());
+        }
+
         return null;
     }
     public static void main(String[] args) throws FileNotFoundException {
@@ -53,7 +54,6 @@ public class Main {
                 .build()
                 .parse(args);
 
-        System.out.println(a.getDescription());
 
         System.out.println(solveWithArgs(a));
     }
