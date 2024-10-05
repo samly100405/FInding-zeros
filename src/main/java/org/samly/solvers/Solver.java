@@ -3,7 +3,7 @@ package org.samly.solvers;
 import java.util.List;
 
 public class Solver {
-    private static final float EPSILON = 0.0000001F;
+    private static final float EPSILON = 1E-23F;
     private static final float DELTA = 0.000001F;
     private static final int HYBRID_BISECTION_COUNT = 5;
 
